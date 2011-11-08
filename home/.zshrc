@@ -4,7 +4,6 @@ SAVEHIST=10000
 setopt appendhistory autocd
 bindkey -e
 
-
 alias emacs-nw='env TERM=xterm-256color emacs -nw'
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
@@ -182,9 +181,9 @@ done
 
 PR_NO_COLOUR="%{$terminfo[sgr0]%}"
 
-#PROMPT="${PR_WHITE}[${PR_LIGHT_BLUE}%n${PR_LIGHT_GREEN}%% ${PR_WHITE}%~]${PR_NO_COLOUR} "
+PROMPT="${PR_WHITE}[${PR_LIGHT_BLUE}%n${PR_LIGHT_GREEN}%% ${PR_WHITE}%~]${PR_NO_COLOUR} "
 
-PROMPT="${PINK}-${GREEN}%n ${PINK}[${ORANGE}%~${PINK}]${PR_NO_COLOUR}%# "
+#PROMPT="${PINK}-${GREEN}%n ${PINK}[${ORANGE}%~${PINK}]${PR_NO_COLOUR}%# "
 
 compinit
 # Extended glob
@@ -259,3 +258,10 @@ if [ -z "$SCREEN_COLORS" ] ; then
     esac
     SCREEN_COLORS=`tput colors`
 fi
+
+export AMDAPPSDKROOT=${HOME}/AMD-APP-SDK-v2.4-lnx64/ 
+export AMDAPPSDKSAMPLESROOT=${HOME}/AMD-APP-SDK-v2.4-lnx64/
+export LD_LIBRARY_PATH=${AMDAPPSDKROOT}lib/x86_64:${LD_LIBRARY_PATH} 
+export PYPY=/opt/pypy-x64-jit-amdfam10
+export PYPY_BIN=${PYPY}/bin/
+export PATH=${PYPY_BIN}:${PATH}
