@@ -1,14 +1,14 @@
 ; -*- mode: lisp; tab-width: 4 -*-
-(add-to-list 'load-path "~/.emacs.d/")
-;(add-to-list 'load-path "~/.emacs.d/coffee-mode")
-;(add-to-list 'load-path "~/.emacs.d/jade-mode")
-(add-to-list 'load-path "~/.emacs.d/color-theme")
-;(add-to-list 'load-path "~/.emacs.d/vendor/coffee-mode")
-(add-to-list 'load-path "~/.emacs.d/vendor/yasnippet")
-(add-to-list 'load-path "~/.emacs.d/magit/")
+(setq emacs-d (concat (expand-file-name "~/.emacs.d") "/"))
+(setq vendor (concat emacs-d "/vendor/"))
 
-(setq load-path (cons "~/.emacs.d/org-mode/lisp" load-path))
-(setq load-path (cons "~/.emacs.d/org-mode/contrib/lisp" load-path))
+(setq load-path (append (list emacs-d
+                              vendor
+                              (concat emacs-d "color-theme")
+                              (concat emacs-d "magit")
+                              (concat vendor "yasnippet"))
+                        load-path))
+
 
 (require 'less-css-mode)
 ;;; Smart tabs
@@ -29,6 +29,7 @@
 (require 'fill-column-indicator)
 ;;; Add ido for backspace awesomeness
 (require 'ido)
+(ido-mode t)
 ;;; Some auto-complete sauce
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
@@ -61,6 +62,7 @@
 (autoload 'pymacs-eval "pymacs" nil t)
 (autoload 'pymacs-exec "pymacs" nil t)
 (autoload 'pymacs-load "pymacs" nil t)
+;(require 'pymacs)
 (pymacs-load "ropemacs" "rope-")
 (setq ropemacs-enable-autoimport t)
 
@@ -94,6 +96,10 @@
 (setq tab-width 4)
 (set-variable 'indent-tabs-mode nil)
 (setq inhibit-startup-message t)
+;; Copy by linking
+(setq backup-by-copying-when-linked t)
+
+
 
 (require 'color-theme)
 (require 'color-theme-tomorrow)
@@ -114,15 +120,16 @@
 
 ;; Many custom set variables
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(ecb-tree-indent 3)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
- '(show-paren-mode t))
+ '(show-paren-mode t)
+ '(vc-follow-symlinks t))
 
 
 ;;; This was installed by package-install.el.
@@ -130,10 +137,15 @@
 ;;; interfacing with ELPA, the package archive.
 ;;; Move this code earlier if you want to reference
 ;;; packages in your .emacs.
+
 (when
     (load
-     (expand-file-name "~/.emacs.d/elpa/package.el"))
+     (expand-file-name "~/.emacs.d/package.el"))
   (package-initialize))
-
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
