@@ -1,12 +1,15 @@
 ; -*- mode: lisp; tab-width: 4 -*-
 (setq emacs-d (concat (expand-file-name "~/.emacs.d") "/"))
 (setq vendor (concat emacs-d "/vendor/"))
-
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file 'no-error)
 (setq load-path (append (list emacs-d
                               vendor
                               (concat emacs-d "color-theme")
                               (concat emacs-d "magit")
-                              (concat vendor "yasnippet"))
+                              (concat vendor "yasnippet")
+                              (concat vendor "gist.el")
+                              (concat vendor "textmate.el"))
                         load-path))
 
 
@@ -42,7 +45,9 @@
 (yas/initialize)
 (yas/load-directory "~/.emacs.d/vendor/yasnippet/snippets")
 
-
+(require 'gist)
+(require 'textmate)
+(textmate-mode)
 
 
 ;;; Backwords kill
@@ -50,7 +55,7 @@
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-c\C-k" 'kill-region)
 ;; Try that
-(setq ns-function-modifier 'control)
+(setq ns-function-modifier (quote control))
 ;; Make files happy
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
