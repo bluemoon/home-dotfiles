@@ -1,3 +1,6 @@
 ;;; Theme customization
+;(require 'color-theme)
+;(require 'tomorrow)
+;(load-theme 'tomorrow)
 
-(load-theme 'wombat)
+(color-theme-tomorrow-night)

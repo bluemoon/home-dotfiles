@@ -1,5 +1,11 @@
 ;;; It's Magit! An Emacs mode for Git.
 
+;;; Magit
+(require 'magit)
+
+(global-set-key (kbd "C-c C-G") 'magit-status)
+(global-set-key (kbd "M-<f1>") 'magit-status)
+
 (add-hook
  'magit-mode-hook
  (lambda ()

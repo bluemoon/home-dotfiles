@@ -1,7 +1,8 @@
 ;;; Generic emacs settings I cannot live without
 
 ;; Use command as the meta key
-(setq ns-command-modifier (quote meta))
+
+(setq ns-function-modifier (quote control))
 
 ;; Don't show the startup screen
 (setq inhibit-startup-message t)
@@ -35,17 +36,22 @@
 (set-default 'fill-column 80)
 
 ;; Prevent the annoying beep on errors
-;; (setq visible-bell t)
+(setq visible-bell t)
 
 ;; Make sure all backup files only live in one place
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
+(setq backup-by-copying t)
+(setq delete-old-versions t
+  kept-new-versions 6
+  kept-old-versions 2
+  version-control t)
 
 ;; Gotta see matching parens
 (show-paren-mode t)
 
 ;; Don't truncate lines
 (setq truncate-lines t)
-(setq truncate-partial-width-windows nil)
+;(setq truncate-partial-width-windows nil)
 
 ;; For emacsclient
 (server-start)
@@ -61,5 +67,18 @@
 (setq ispell-list-command "list")
 (setq ispell-extra-args '("--sug-mode=ultra"))
 
+
+;; show line numbers on the side
+(global-linum-mode 1)
+;;; Get rid of most of the gui
+(tool-bar-mode -1)
+;;;(menu-bar-mode -1)
+(toggle-scroll-bar -1)
+
+;;; Show my parenthese
+(show-paren-mode t)
+;;; Show me a line number and column number
+(line-number-mode 1)
+(column-number-mode 1)
 ;; zap-up-to-char, forward-to-word, backward-to-word, etc
 (require 'misc)

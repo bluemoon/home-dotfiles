@@ -4,7 +4,7 @@
 (setq-default indent-tabs-mode nil)
 
 ;; If there is a tab, make it the size of 2 spaces
-(setq-default tab-width 2)
+(setq-default tab-width 4)
 
 ;; Mode specific indent sizes
 ;; TODO: Consider putting these in their own mode specific inits
@@ -63,3 +63,4 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (global-set-key (kbd "TAB") 'smart-tab)
+(require 'smarttabs)

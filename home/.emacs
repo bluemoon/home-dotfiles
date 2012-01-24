@@ -1,173 +1,71 @@
 ; -*- mode: lisp; tab-width: 4 -*-
-(setq emacs-d (concat (expand-file-name "~/.emacs.d") "/"))
-(setq vendor (concat emacs-d "/vendor/"))
+(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/vendor")
+
 (setq custom-file "~/.emacs.d/custom.el")
-(when (file-exists-p custom-file) (load custom-file))
+(load custom-file 'noerror)
 
+(load "bluemoon/env")
+(load "bluemoon/global")
+(load "bluemoon/defuns")
+
+(vendor 'color-theme)
+(vendor 'color-theme-tomorrow)
+(vendor 'auto-complete)
+(vendor 'auto-complete-config)
+
+(load "bluemoon/theme")
+(load "bluemoon/bindings")
+(load "bluemoon/tabs")
+(load "bluemoon/flymake")
+(load "bluemoon/disabled")
+(load "bluemoon/fonts")
+(load "bluemoon/utf-8")
+(load "bluemoon/scratch")
+(load "bluemoon/grep")
+(load "bluemoon/ac")
+(load "bluemoon/python")
+(load "bluemoon/diff")
+(load "bluemoon/ido")
+(load "bluemoon/dired")
+(load "bluemoon/recentf")
+(load "bluemoon/rectangle")
+(load "bluemoon/org")
+(load "bluemoon/zoom")
+(load "bluemoon/javascript")
+(load "bluemoon/ri-emacs")
+(load "bluemoon/mac")
+(load "bluemoon/server-mode")
+(load "bluemoon/shell-mode")
+
+(vendor 'flymake)
+(vendor 'ruby-mode)
+(vendor 'rinari)
+(vendor 'textmate)
+(vendor 'maxframe      'mf 'maximize-frame)
+(vendor 'filladapt)
+(vendor 'coffee-mode)
+(vendor 'haml-mode)
+(vendor 'sass-mode)
+(vendor 'htmlize)
+(vendor 'full-ack      'ack 'ack-same 'ack-find-same-file 'ack-find-file 'ack-interactive)
+(vendor 'cdargs        'cv 'cdargs)
+(vendor 'magit         'magit-status)
+(vendor 'psvn          'svn-status)
+(vendor 'js2-mode      'js2-mode)
+(vendor 'markdown-mode 'markdown-mode)
+(vendor 'textile-mode  'textile-mode)
+(vendor 'csv-mode      'csv-mode)
+(vendor 'yaml-mode     'yaml-mode)
+(vendor 'inf-ruby      'inf-ruby)
+(vendor 'rcodetools    'xmp)
 (vendor 'yasnippet)
-(vendor 'gist.el)
-(vendor 'textmate.el)
-(vendor 'tabbar)
-
-(setq load-path (append (list emacs-d
-                              vendor
-                              (concat emacs-d "color-theme")
-                              (concat emacs-d "magit")
-                              ;(concat vendor "yasnippet")
-                              ;(concat vendor "gist.el")
-                              ;(concat vendor "textmate.el")
-                              ;(concat vendor "tabbar")
-                              )
-                        load-path))
-
-
-(require 'less-css-mode)
-;;; Smart tabs
-(require 'smarttabs)
-;;; Magit
-(require 'magit)
-(global-set-key (kbd "C-c C-G") 'magit-status)
-(global-set-key (kbd "M-<f1>") 'magit-status)
-;;; Pretty python lambda's
-(require 'lambda-mode)
-(add-hook 'python-mode-hook #'lambda-mode 1)
-(setq lambda-symbol (string (make-char 'greek-iso8859-7 107)))
-;;; Python modes
-(require 'python-pep8)
-(require 'python-pylint)
-(require 'flymake)
-(setq flymake-log-level 3)
-(require 'fill-column-indicator)
-;;; Add ido for backspace awesomeness
-(require 'ido)
-(ido-mode t)
-;;; Some auto-complete sauce
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-;;; Some fixes for AC
-(setq ac-auto-start t)
-(setq ac-quick-help-delay 0.5)
-(ac-config-default)
-;;; Yasnippet
-(require 'yasnippet) ;; not yasnippet-bundle
-(yas/initialize)
-(yas/load-directory "~/.emacs.d/vendor/yasnippet/snippets")
-
-(require 'gist)
-(require 'textmate)
-(textmate-mode)
-
-(fset 'yes-or-no-p 'y-or-n-p)
-(setq transient-mark-mode t)
-(set-fringe-mode '(1 . 1))
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
-;; Gotta see matching parens
-(show-paren-mode t)
-
-;; Don't truncate lines
-(setq truncate-lines t)
-
-;;; Backwords kill
-(global-set-key "\C-w" 'backward-kill-word)
-(global-set-key "\C-x\C-k" 'kill-region)
-(global-set-key "\C-c\C-k" 'kill-region)
-;; Try that
-(setq ns-function-modifier (quote control))
-;; Make files happy
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(autoload 'js2-mode "js2" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-;(require 'pymacs)
-(pymacs-load "ropemacs" "rope-")
-(setq ropemacs-enable-autoimport t)
-
-(ac-ropemacs-initialize)
-(add-hook 'python-mode-hook
-      (lambda ()
-    (add-to-list 'ac-sources 'ac-source-ropemacs)))
-
-;;; More reasonable backup files
-(setq backup-directory-alist `(("." . "~/.saves")))
-(setq backup-by-copying t)
-(setq delete-old-versions t
-  kept-new-versions 6
-  kept-old-versions 2
-  version-control t)
-
-;; show line numbers on the side
-(global-linum-mode 1)
-;;; Get rid of most of the gui
-(tool-bar-mode -1)
-;;;(menu-bar-mode -1)
-(toggle-scroll-bar -1)
-
-;;; Show my parenthese
-(show-paren-mode t)
-;;; Show me a line number and column number
-(line-number-mode 1)
-(column-number-mode 1)
-
-;;; Be reasonable with tabs
-(setq tab-width 4)
-(set-variable 'indent-tabs-mode nil)
-(setq inhibit-startup-message t)
-;; Copy by linking
-(setq backup-by-copying-when-linked t)
-
-
-
-(require 'color-theme)
-(require 'color-theme-tomorrow)
-(color-theme-initialize)
-(color-theme-tomorrow-night-bright)
-;;; This is for GNU Emacs 22
-(defun terminal-init-screen ()
-  "Terminal initialization function for screen."
-  ;; Use the xterm color initialization code.
-  (load "term/xterm")
-  (xterm-register-default-colors)
-  (tty-set-up-initial-frame-faces))
-
-    ;;; This is for GNU Emacs 21
-  (if (= 21 emacs-major-version)
-    (load "term/xterm-256color"))
-
-
-;; Many custom set variables
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(ecb-tree-indent 3)
- '(indent-tabs-mode nil)
- '(inhibit-startup-screen t)
- '(show-paren-mode t)
- '(vc-follow-symlinks t))
-
-
-;;; This was installed by package-install.el.
-;;; This provides support for the package system and
-;;; interfacing with ELPA, the package archive.
-;;; Move this code earlier if you want to reference
-;;; packages in your .emacs.
-
-(when
-    (load
-     (expand-file-name "~/.emacs.d/package.el"))
-  (package-initialize))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(vendor 'jekyll)
+(vendor 'lua-mode      'lua-mode)
+(vendor 'feature-mode)
+(vendor 'mode-line-bell)
+(vendor 'revbufs       'revbufs)
+(vendor 'shell-pop)
+(vendor 'mo-git-blame  'mo-git-blame-file 'mo-git-blame-current)
+(vendor 'ace-jump-mode 'ace-jump-mode 'ace-jump-word-mode 'ace-jump-char-mode 'ace-jump-line-mode)
+(vendor 'key-chord)

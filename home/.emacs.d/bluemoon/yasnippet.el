@@ -2,6 +2,11 @@
 
 (require 'dropdown-list)
 
+;;; Yasnippet
+(require 'yasnippet) ;; not yasnippet-bundle
+(yas/initialize)
+(yas/load-directory "~/.emacs.d/vendor/yasnippet/snippets")
+
 (yas/global-mode 1)
 
 (yas/load-directory "~/.emacs.d/vendor/yasnippet/snippets")
@@ -16,4 +21,3 @@
 (add-hook 'yas/minor-mode-hook
           (lambda () (define-key yas/minor-mode-map
                        (kbd "TAB") 'smart-tab))) ; was yas/expand
-
