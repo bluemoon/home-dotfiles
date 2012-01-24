@@ -2,14 +2,16 @@
 (setq emacs-d (concat (expand-file-name "~/.emacs.d") "/"))
 (setq vendor (concat emacs-d "/vendor/"))
 (setq custom-file "~/.emacs.d/custom.el")
-(load custom-file 'no-error)
+(when (file-exists-p custom-file) (load custom-file))
+
 (setq load-path (append (list emacs-d
                               vendor
                               (concat emacs-d "color-theme")
                               (concat emacs-d "magit")
                               (concat vendor "yasnippet")
                               (concat vendor "gist.el")
-                              (concat vendor "textmate.el"))
+                              (concat vendor "textmate.el")
+                              (concat vendor "tabbar"))
                         load-path))
 
 
