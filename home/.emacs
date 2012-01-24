@@ -1,137 +1,52 @@
 ; -*- mode: lisp; tab-width: 4 -*-
 (add-to-list 'load-path "~/.emacs.d/")
-(add-to-list 'load-path "~/.emacs.d/coffee-mode")
-(add-to-list 'load-path "~/.emacs.d/jade-mode")
+;(add-to-list 'load-path "~/.emacs.d/coffee-mode")
+;(add-to-list 'load-path "~/.emacs.d/jade-mode")
 (add-to-list 'load-path "~/.emacs.d/color-theme")
-(add-to-list 'load-path "~/.emacs.d/vendor/coffee-mode")
+;(add-to-list 'load-path "~/.emacs.d/vendor/coffee-mode")
 (add-to-list 'load-path "~/.emacs.d/vendor/yasnippet")
+(add-to-list 'load-path "~/.emacs.d/magit/")
 
 (setq load-path (cons "~/.emacs.d/org-mode/lisp" load-path))
 (setq load-path (cons "~/.emacs.d/org-mode/contrib/lisp" load-path))
 
-
-(load "~/.emacs.d/nxhtml/autostart.el")
-
-
-
-
-(require 'jinja)
-
+(require 'less-css-mode)
+;;; Smart tabs
+(require 'smarttabs)
 ;;; Magit
 (require 'magit)
 (global-set-key (kbd "C-c C-G") 'magit-status)
 (global-set-key (kbd "M-<f1>") 'magit-status)
-
-
+;;; Pretty python lambda's
+(require 'lambda-mode)
+(add-hook 'python-mode-hook #'lambda-mode 1)
+(setq lambda-symbol (string (make-char 'greek-iso8859-7 107)))
+;;; Python modes
+(require 'python-pep8)
+(require 'python-pylint)
+(require 'flymake)
+(setq flymake-log-level 3)
+(require 'fill-column-indicator)
+;;; Add ido for backspace awesomeness
+(require 'ido)
+;;; Some auto-complete sauce
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 
 ;;; Backwords kill
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-c\C-k" 'kill-region)
-
-
-;;; Org-mode
-(require 'org-install)
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-(transient-mark-mode 1)
-(add-hook 'message-mode-hook 'turn-on-flyspell 'append)
-(setq org-log-done t)
-(add-hook 'org-mode-hook (lambda ()
-                           (local-set-key "\M-n" 'outline-next-visible-heading)
-                           (local-set-key "\M-p" 'outline-previous-visible-heading)
-                           ;; table
-                           (local-set-key "\M-\C-w" 'org-table-copy-region)
-                           (local-set-key "\M-\C-y" 'org-table-paste-rectangle)
-                           (local-set-key "\M-\C-l" 'org-table-sort-lines)
-                           ;; display images
-                           (local-set-key "\M-I" 'org-toggle-iimage-in-org)
-                           ;; fix tab
-                           (local-set-key "\C-y" 'yank)
-                           (local-set-key "RET" 'org-meta-return)
-                           (local-set-key "<left>" 'org-metaleft)
-                           (local-set-key "<right>" 'org-metaright)
-                           ;; yasnippet (allow yasnippet to do it's thing in org files)
-                           (org-set-local 'yas/trigger-key [tab])
-
-                           (define-key yas/keymap [tab] 'yas/next-field-group)))
-
-
-
-(require 'less-css-mode)
-
-
-;;; Smart tabs
-(require 'smarttabs)
-;;; Coffeescript
-(defun coffee-custom ()
-  "coffee-mode-hook"
-
-  ;; Emacs key binding
-  (define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer))
-
-(add-hook 'coffee-mode-hook '(lambda () (coffee-custom)))
-;;; Pretty python lambda's
-(require 'lambda-mode)
-(add-hook 'python-mode-hook #'lambda-mode 1)
-(setq lambda-symbol (string (make-char 'greek-iso8859-7 107)))
-
-;;; Python modes
-(require 'python-pep8)
-(require 'python-pylint)
-;;;(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-;;; GAS Mode
-(require 'gas-mode)
-
-;;; Coffee script
-(require 'coffee-mode)
-(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
-(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
-(defun coffee-custom ()
-  "coffee-mode-hook"
- (set (make-local-variable 'tab-width) 2))
-
-(add-hook 'coffee-mode-hook
-  '(lambda() (coffee-custom)))
-
-(define-key coffee-mode-map [(meta r)] 'coffee-compile-buffer)
+;; Try that
+(setq ns-function-modifier 'control)
+;; Make files happy
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-
-(add-to-list 'load-path "~/.emacs.d/fuzzy-find-in-project/")
-(require 'fuzzy-find-in-project)
-(fuzzy-find-project-root "~/Project/pypy")
-
-
-
-
-
-(require 'flymake)
-(setq flymake-log-level 3)
-
-(require 'sws-mode)
-(require 'jade-mode)
-(add-to-list 'auto-mode-alist '("\\.styl$" . sws-mode))
-(add-to-list 'auto-mode-alist '("\\.jade$" . sws-mode))
-(require 'fill-column-indicator)
-;;; Add ido for backspace awesomeness
-(require 'ido)
-
-
-
-
-;;; Some auto-complete sauce
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 ;;; Add AC-Clang
-(require 'auto-complete-clang)
+;(require 'auto-complete-clang)
 ;;(require 'auto-complete-python)
 
 ;;; Some fixes for AC
@@ -214,3 +129,17 @@
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(show-paren-mode t))
+
+
+;;; This was installed by package-install.el.
+;;; This provides support for the package system and
+;;; interfacing with ELPA, the package archive.
+;;; Move this code earlier if you want to reference
+;;; packages in your .emacs.
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))
+
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+
