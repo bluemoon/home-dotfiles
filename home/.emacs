@@ -4,14 +4,20 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (when (file-exists-p custom-file) (load custom-file))
 
+(vendor 'yasnippet)
+(vendor 'gist.el)
+(vendor 'textmate.el)
+(vendor 'tabbar)
+
 (setq load-path (append (list emacs-d
                               vendor
                               (concat emacs-d "color-theme")
                               (concat emacs-d "magit")
-                              (concat vendor "yasnippet")
-                              (concat vendor "gist.el")
-                              (concat vendor "textmate.el")
-                              (concat vendor "tabbar"))
+                              ;(concat vendor "yasnippet")
+                              ;(concat vendor "gist.el")
+                              ;(concat vendor "textmate.el")
+                              ;(concat vendor "tabbar")
+                              )
                         load-path))
 
 
@@ -51,6 +57,15 @@
 (require 'textmate)
 (textmate-mode)
 
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq transient-mark-mode t)
+(set-fringe-mode '(1 . 1))
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+;; Gotta see matching parens
+(show-paren-mode t)
+
+;; Don't truncate lines
+(setq truncate-lines t)
 
 ;;; Backwords kill
 (global-set-key "\C-w" 'backward-kill-word)
