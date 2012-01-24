@@ -32,6 +32,17 @@
 ;;; Some auto-complete sauce
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+;;; Some fixes for AC
+(setq ac-auto-start t)
+(setq ac-quick-help-delay 0.5)
+(ac-config-default)
+;;; Yasnippet
+(require 'yasnippet) ;; not yasnippet-bundle
+(yas/initialize)
+(yas/load-directory "~/.emacs.d/vendor/yasnippet/snippets")
+
+
+
 
 ;;; Backwords kill
 (global-set-key "\C-w" 'backward-kill-word)
@@ -45,21 +56,11 @@
 (autoload 'js2-mode "js2" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
-;;; Add AC-Clang
-;(require 'auto-complete-clang)
-;;(require 'auto-complete-python)
-
-;;; Some fixes for AC
-(setq ac-auto-start t)
-(setq ac-quick-help-delay 0.5)
-(ac-config-default)
-
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")
 (autoload 'pymacs-eval "pymacs" nil t)
 (autoload 'pymacs-exec "pymacs" nil t)
 (autoload 'pymacs-load "pymacs" nil t)
-(require 'pymacs)
 (pymacs-load "ropemacs" "rope-")
 (setq ropemacs-enable-autoimport t)
 
@@ -67,13 +68,6 @@
 (add-hook 'python-mode-hook
       (lambda ()
     (add-to-list 'ac-sources 'ac-source-ropemacs)))
-
-
-(add-to-list 'load-path
-             "~/.emacs.d/vendor/yasnippet")
-(require 'yasnippet) ;; not yasnippet-bundle
-(yas/initialize)
-(yas/load-directory "~/.emacs.d/vendor/yasnippet/snippets")
 
 ;;; More reasonable backup files
 (setq backup-directory-alist `(("." . "~/.saves")))
