@@ -7,8 +7,27 @@
   (let* ((file (symbol-name library))
          (normal (concat "~/.emacs.d/vendor/" file))
          (suffix (concat normal ".el"))
-         (personal (concat "~/.emacs.d/rmm5t/" file))
-	 (found nil))
+         (personal (concat "~/.emacs.d/bluemoon/" file))
+         (found nil))
+    (cond
+     ((file-directory-p normal) (add-to-list 'load-path normal) (set 'found t))
+     ((file-directory-p suffix) (add-to-list 'load-path suffix) (set 'found t))
+     ((file-exists-p suffix)  (set 'found t)))
+    (when found
+      (if autoload-functions
+          (dolist (autoload-function autoload-functions)
+            (autoload autoload-function (symbol-name library) nil t))
+        (require library)))
+    (when (file-exists-p (concat personal ".el"))
+      (load personal))))
+
+
+(defun pload (library &rest autoload-functions)
+  (let* ((file (symbol-name library))
+         (normal (concat "~/.emacs.d/vendor/" file))
+         (suffix (concat normal ".el"))
+         (personal (concat "~/.emacs.d/bluemoon/" file))
+         (found nil))
     (cond
      ((file-directory-p normal) (add-to-list 'load-path normal) (set 'found t))
      ((file-directory-p suffix) (add-to-list 'load-path suffix) (set 'found t))
@@ -103,10 +122,10 @@ point and around or after mark are interchanged."
 (defun rotate-windows ()
   (interactive)
   (let ((start-positions (rotate-left (mapcar 'window-start (window-list))))
-	(buffers (rotate-left (mapcar 'window-buffer (window-list)))))
+        (buffers (rotate-left (mapcar 'window-buffer (window-list)))))
     (mapcar* (lambda (window  buffer pos)
-	       (set-window-buffer window buffer)
-	       (set-window-start window pos))
-	     (window-list)
-	     buffers
-	     start-positions)))
+               (set-window-buffer window buffer)
+               (set-window-start window pos))
+             (window-list)
+             buffers
+             start-positions)))

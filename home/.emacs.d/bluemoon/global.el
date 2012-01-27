@@ -12,7 +12,7 @@
 
 ;; Highlight regions and add special behaviors to regions.
 ;; "C-h d transient" for more info
-(setq transient-mark-mode t)
+;(setq transient-mark-mode t)
 
 ;; Display line and column numbers
 (setq line-number-mode    t)
@@ -36,7 +36,7 @@
 (set-default 'fill-column 80)
 
 ;; Prevent the annoying beep on errors
-(setq visible-bell t)
+;(setq visible-bell t)
 
 ;; Make sure all backup files only live in one place
 (setq backup-directory-alist `(("." . "~/.emacs.d/backups")))
@@ -49,34 +49,33 @@
 ;; Gotta see matching parens
 (show-paren-mode t)
 
-;; Don't truncate lines
+;; Truncate lines
 (setq truncate-lines t)
 ;(setq truncate-partial-width-windows nil)
 
 ;; For emacsclient
-(server-start)
+;(server-start)
 
 ;; Trailing whitespace is unnecessary
-(add-hook 'before-save-hook (lambda () (whitespace-cleanup)))
+;(add-hook 'before-save-hook (lambda () (whitespace-cleanup)))
 
 ;; Trash can support
 (setq delete-by-moving-to-trash t)
 
 ;; `brew install aspell --lang=en` (instead of ispell)
-(setq-default ispell-program-name "aspell")
-(setq ispell-list-command "list")
-(setq ispell-extra-args '("--sug-mode=ultra"))
+;(setq-default ispell-program-name "aspell")
+;(setq ispell-list-command "list")
+;(setq ispell-extra-args '("--sug-mode=ultra"))
 
 
 ;; show line numbers on the side
-(global-linum-mode 1)
+;(global-linum-mode 1)
 ;;; Get rid of most of the gui
-(tool-bar-mode -1)
+;(tool-bar-mode -1)
 ;;;(menu-bar-mode -1)
 (toggle-scroll-bar -1)
 
-;;; Show my parenthese
-(show-paren-mode t)
+
 ;;; Show me a line number and column number
 (line-number-mode 1)
 (column-number-mode 1)
@@ -86,5 +85,3 @@
 
 (add-hook 'python-mode-hook 'set-newline-and-indent)
 (define-key global-map (kbd "RET") 'newline-and-indent)
-
-(require 'misc)

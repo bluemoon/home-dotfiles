@@ -14,9 +14,7 @@
 (autoload 'pymacs-load "pymacs" nil t)
 ;(require 'pymacs)
 (pymacs-load "ropemacs" "rope-")
-(setq ropemacs-enable-autoimport t)
-
 (ac-ropemacs-initialize)
-(add-hook 'python-mode-hook
-      (lambda ()
-    (add-to-list 'ac-sources 'ac-source-ropemacs)))
+(setq ropemacs-guess-project t)
+(setq ropemacs-enable-autoimport t)
+  (setq ropemacs-autoimport-modules '("flask.*" "trekseat"))

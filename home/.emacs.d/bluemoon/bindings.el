@@ -17,7 +17,7 @@
 (global-set-key [(shift f2)]        'occur)
 
 ;; Keyboard macros
-(global-set-key [(shift f4)] 'kmacro-start-macro-or-insert-counter)
+(global-set-key [(shift f4)] 'rope-show-doc)
 ;; (global-set-key [(f4)]    'kmacro-end-or-call-macro)  ;; already defined
 
 ;; Refresh-like

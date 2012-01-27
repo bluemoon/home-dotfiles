@@ -5,14 +5,14 @@
 ;; Author: Jaeyoun Chung [jay.chung@gmail.com]
 ;; Maintainer:
 ;; Copyright (C) 2008 Jaeyoun Chung
-;; Created: Fri Aug 14 11:46:34 2009 (Central European Time)
+;; Created: Sun Mar 16 11:20:45 2008 (Pacific Daylight Time)
 ;; Version:
-;; Last-Updated: Fri Aug 14 11:46:34 2009 (Central European Time)
-;;           By: Deniz Dogan
-;;     Update #: 44
+;; Last-Updated: Sun Mar 16 12:19:49 2008 (Pacific Daylight Time)
+;;           By: dradams
+;;     Update #: 43
 ;; URL: http://www.emacswiki.org/cgi-bin/wiki/dropdown-list.el
 ;; Keywords: convenience menu
-;; Compatibility: GNU Emacs 21.x, GNU Emacs 22.x, GNU Emacs 23.x
+;; Compatibility: GNU Emacs 21.x, GNU Emacs 22.x
 ;;
 ;; Features that might be required by this library:
 ;;
@@ -28,9 +28,6 @@
 ;;
 ;;; Change log:
 ;;
-;; 2009/08/14 Deniz Dogan
-;;     Making TAB select the chosen option.  If no option has been selected, chooses the
-;;     first one.
 ;; 2008/03/16 dadams
 ;;     Clean-up - e.g. use char-to-string for control chars removed by email posting.
 ;;     Moved example usage code (define-key*, command-selector) inside the library.
@@ -65,11 +62,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defface dropdown-list-face
-    '((t :inherit default :background "lightyellow" :foreground "black"))
+  '((t :inherit default :background "lightyellow" :foreground "black"))
   "*Bla." :group 'dropdown-list)
 
 (defface dropdown-list-selection-face
-    '((t :inherit dropdown-list :background "purple"))
+  '((t :inherit dropdown-list-face :background "purple"))
   "*Bla." :group 'dropdown-list)
 
 (defvar dropdown-list-overlays nil)
@@ -162,46 +159,43 @@
       (and start
            (dropdown-list-move-to-start-line (length candidates))
            (loop initially (vertical-motion 0)
-              for candidate in candidates
-              do (dropdown-list-line (+ (current-column) start) candidate)
-              while (/= (vertical-motion 1) 0)
-              finally return t)))))
+                 for candidate in candidates
+                 do (dropdown-list-line (+ (current-column) start) candidate)
+                 while (/= (vertical-motion 1) 0)
+                 finally return t)))))
 
 (defun dropdown-list (candidates)
   (let ((selection)
         (temp-buffer))
     (save-window-excursion
       (unwind-protect
-           (let ((candidate-count (length candidates))
-                 done key selidx)
-             (while (not done)
-               (unless (dropdown-list-at-point candidates selidx)
-                 (switch-to-buffer (setq temp-buffer (get-buffer-create "*selection*"))
-                                   'norecord)
-                 (delete-other-windows)
-                 (delete-region (point-min) (point-max))
-                 (insert (make-string (length candidates) ?\n))
-                 (goto-char (point-min))
-                 (dropdown-list-at-point candidates selidx))
-               (setq key (read-key-sequence ""))
-               (cond ((and (stringp key)
-                           (>= (aref key 0) ?1)
-                           (<= (aref key 0) (+ ?0 (min 9 candidate-count))))
-                      (setq selection (- (aref key 0) ?1)
-                            done      t))
-                     ((member key `(,(char-to-string ?\C-p) [up]))
-                      (setq selidx (mod (+ candidate-count (1- (or selidx 0)))
-                                        candidate-count)))
-                     ((member key `(,(char-to-string ?\C-n) [down]))
-                      (setq selidx (mod (1+ (or selidx -1)) candidate-count)))
-                     ((member key `(,(char-to-string ?\C-i) [tab]))
-                      (setq done t
-                            selection (if (null selidx) 0 selidx)))
-                     ((member key `(,(char-to-string ?\f))))
-                     ((member key `(,(char-to-string ?\r) [return]))
-                      (setq selection selidx
-                            done      t))
-                     (t (setq done t)))))
+          (let ((candidate-count (length candidates))
+                done key (selidx 0))
+            (while (not done)
+              (unless (dropdown-list-at-point candidates selidx)
+                (switch-to-buffer (setq temp-buffer (get-buffer-create "*selection*"))
+                                  'norecord)
+                (delete-other-windows)
+                (delete-region (point-min) (point-max))
+                (insert (make-string (length candidates) ?\n))
+                (goto-char (point-min))
+                (dropdown-list-at-point candidates selidx))
+              (setq key (read-key-sequence ""))
+              (cond ((and (stringp key)
+                          (>= (aref key 0) ?1)
+                          (<= (aref key 0) (+ ?0 (min 9 candidate-count))))
+                     (setq selection (- (aref key 0) ?1)
+                           done      t))
+                    ((member key `(,(char-to-string ?\C-p) [up] "p"))
+                     (setq selidx (mod (+ candidate-count (1- (or selidx 0)))
+                                       candidate-count)))
+                    ((member key `(,(char-to-string ?\C-n) [down] "n"))
+                     (setq selidx (mod (1+ (or selidx -1)) candidate-count)))
+                    ((member key `(,(char-to-string ?\f))))
+                    ((member key `(,(char-to-string ?\r) [return]))
+                     (setq selection selidx
+                           done      t))
+                    (t (setq done t)))))
         (dropdown-list-hide)
         (and temp-buffer (kill-buffer temp-buffer)))
       ;;     (when selection
@@ -255,4 +249,3 @@ Use multiple times to bind different COMMANDs to the same KEY."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; dropdown-list.el ends here
-
