@@ -1,48 +1,39 @@
 
-;;; Some auto-complete sauce
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-;(setq ac-dwim t)
-(ac-config-default)
-;(global-auto-complete-mode t)
-;(auto-complete-mode t)
-(define-key ac-complete-mode-map "\t" 'ac-expand)
-(define-key ac-complete-mode-map "\r" 'ac-complete)
-(define-key ac-complete-mode-map "\M-n" 'ac-next)
-(define-key ac-complete-mode-map "\M-p" 'ac-previous)
-(define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
-(setq ac-auto-start 4)
-(setq ac-delay 0.2)
+;; setup pymacs
+;; (autoload 'pymacs-apply "pymacs")
+;; (autoload 'pymacs-call "pymacs")
+;; (autoload 'pymacs-eval "pymacs" nil t)
+;; (autoload 'pymacs-exec "pymacs" nil t)
+;; (autoload 'pymacs-load "pymacs" nil t)
 
-(ac-ropemacs-initialize)
+;; (defvar ac-ropemacs-loaded nil)
+;; (defun ac-ropemacs-require ()
+;;   (unless ac-ropemacs-loaded
+;;     ;; Almost people hate rope to use `C-x p'.
+;;     (if (not (boundp 'ropemacs-global-prefix))
+;;         (setq ropemacs-global-prefix nil))
+;;     (pymacs-load "ropemacs" "rope-")
+;;     (setq ropemacs-enable-autoimport t)
+;;     (setq ac-ropemacs-loaded t)))
 
-(defun ac-ropemacs-candidates ()
-  (mapcar (lambda (completion)
-      (concat ac-prefix completion))
-    (rope-completions)))
+;; (defvar ac-ropemacs-completions-cache nil)
 
-(ac-define-source nropemacs
-  '((candidates . ac-ropemacs-candidates)
-    (symbol     . "p")))
+;; (defvar ac-source-ropemacs
+;;   '((init
+;;      . (lambda ()
+;;          (setq ac-ropemacs-completions-cache
+;;                (mapcar
+;;                 (lambda (completion)
+;;                   (concat ac-prefix completion))
+;;                 (ignore-errors
+;;                   (rope-completions))))))
+;;     (candidates . (lambda ()
+;;                     (all-completions ac-prefix ac-ropemacs-completions-cache)))))
 
-(ac-define-source nropemacs-dot
-  '((candidates . ac-ropemacs-candidates)
-    (symbol     . "p")
-    (prefix     . c-dot)
-    (requires   . 0)))
+;; (defun ac-ropemacs-setup ()
+;;   (ac-ropemacs-require)
+;;   ;(setq ac-sources (append (list 'ac-source-ropemacs) ac-sources))
+;;   (setq ac-omni-completion-sources '(("\\." ac-source-ropemacs))))
 
-(add-hook 'python-mode-hook
-          (lambda ()
-            (cond ((file-exists-p ".ropeproject")
-                   (rope-open-project default-directory))
-                  ((file-exists-p "../.ropeproject")
-                   (rope-open-project (concat default-directory "..")))
-                  )))
-
-(defun ac-nropemacs-setup ()
-  (setq ac-sources (append '(ac-source-nropemacs
-                             ac-source-nropemacs-dot) ac-sources)))
-;(defun ac-python-mode-setup ()
-;  (add-to-list 'ac-sources 'ac-source-yasnippet))
-
-;(add-hook 'python-mode-hook 'ac-python-mode-setup)
-(add-hook 'rope-open-project-hook 'ac-nropemacs-setup)
+;; (defun ac-ropemacs-init ()
+;;   (add-hook 'python-mode-hook 'ac-ropemacs-setup))
